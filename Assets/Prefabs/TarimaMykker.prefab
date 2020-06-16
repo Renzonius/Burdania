@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7802001456687354331
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6493380477711868872}
+  - component: {fileID: 2829977569556158974}
+  - component: {fileID: 8393180217224209671}
+  - component: {fileID: 5358552805873581931}
+  m_Layer: 0
+  m_Name: TarimaMykker
+  m_TagString: Muro
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6493380477711868872
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7802001456687354331}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -15, y: 0, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!33 &2829977569556158974
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7802001456687354331}
+  m_Mesh: {fileID: 7411516826201047070, guid: c9e1f7aaefc070d45b0bbeebdc1b7d73, type: 3}
+--- !u!23 &8393180217224209671
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7802001456687354331}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 24b89f6deea5ab347af951d4821649b3, type: 2}
+  - {fileID: 2100000, guid: 900a005111835cd438025732d42f8f9b, type: 2}
+  - {fileID: 2100000, guid: b1d9a00d69c6d80478c24009eb29b6ea, type: 2}
+  - {fileID: 2100000, guid: 980810ddd86ccea49a37b57e9d19531a, type: 2}
+  - {fileID: 2100000, guid: a9048ea0d85ed0144a2342fd81bfb263, type: 2}
+  - {fileID: 2100000, guid: b4d70d3b663cc944f9f7131fc58a5a3b, type: 2}
+  - {fileID: 2100000, guid: f125ba3ab8e2ae340b6c5c837fb8c57b, type: 2}
+  - {fileID: 2100000, guid: 7bc68bcf17e69594ca2742b94e4d918e, type: 2}
+  - {fileID: 2100000, guid: 4a6d1076eb6b34247902af66f67479db, type: 2}
+  - {fileID: 2100000, guid: 555362a6720d69c40b44cb182e7b3b2e, type: 2}
+  - {fileID: 2100000, guid: b69f7d336d385544babe88ec74baea29, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!65 &5358552805873581931
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7802001456687354331}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 5.5000014, y: 4.559158, z: 3.15}
+  m_Center: {x: -0.12499976, y: 2.279579, z: 0.18603325}

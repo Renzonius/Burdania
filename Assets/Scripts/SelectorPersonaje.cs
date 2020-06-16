@@ -13,7 +13,6 @@ public class SelectorPersonaje : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(this);
-        
     }
    
     public void SelectorUno()
@@ -31,10 +30,5 @@ public class SelectorPersonaje : MonoBehaviour
     public void SelectorCuatro()
     {
         seleccionoCuatro = true;
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

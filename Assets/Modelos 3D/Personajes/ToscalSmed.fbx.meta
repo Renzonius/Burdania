@@ -2,13 +2,31 @@ fileFormatVersion: 2
 guid: 719822f3d01f3794d8b6ff1192cd6702
 ModelImporter:
   serializedVersion: 26
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      74: 7097964810986871144
+    second: Armature.002|Armature.002|Armature|atack|Armature|atack
+  - first:
+      74: 7677459607848799553
+    second: Armature.002|Armature.002|Armature|Death|Armature|Death
+  - first:
+      74: 411039492979963713
+    second: Armature.002|Armature.002|Armature|Jump|Armature|Jump
+  - first:
+      74: -8587716484270316900
+    second: Armature.002|Armature.002|Armature|reposo|Armature|reposo
+  - first:
+      74: -7107122986988177002
+    second: Armature.002|Armature.002|Armature|Run|Armature|Run
+  - first:
+      74: 8703718177074404611
+    second: Armature.002|Armature.002|Armature|Win|Armature|Win
   externalObjects: {}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
-    materialLocation: 0
+    materialLocation: 1
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -87,7 +105,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

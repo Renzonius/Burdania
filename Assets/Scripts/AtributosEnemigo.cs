@@ -19,16 +19,16 @@ public class AtributosEnemigo : MonoBehaviour
         vidaAhora -= daño;
 
 
-        if (vidaAhora <= 0)
-        {
-            Morir();
-        }
+        //if (vidaAhora <= 0)
+        //{
+        //    Morir();
+        //}
     }
-    void Morir()
-    {
-        Destroy(poder);
-        GetComponent<Collider>().enabled = false;
-        int siguienteEscena = SceneManager.GetActiveScene().buildIndex + 1;
-        SceneManager.LoadScene(siguienteEscena);
-    }
+    //void Morir()
+    //{
+    //    Destroy(poder);
+    //    GetComponent<Collider>().enabled = false;
+    //    int siguienteEscena = SceneManager.GetActiveScene().buildIndex + 1;
+    //    SceneManager.LoadScene(siguienteEscena);
+    //}
 }

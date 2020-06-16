@@ -5,6 +5,24 @@ TagManager:
   serializedVersion: 2
   tags:
   - Jugador
+  - Arma
+  - Muro
+  - CentroArena
+  - Enemigo
+  - Dragon
+  - Suelo
+  - Enfocador
+  - CamaraJugador
+  - SpawnLlamas
+  - Fuego
+  - Municion
+  - SpawnLanza
+  - Lanza
+  - Drakan
+  - SpawnLlamasPersecucion
+  - MuroDeFuego
+  - FocoPersecucion
+  - CamaraPrincipal
   layers:
   - Default
   - TransparentFX
