@@ -61,6 +61,7 @@ public class BallestaLogic : MonoBehaviour
             {
                 cantidadDePiezasJugador = 0;
                 CantidadProyectil = 1;
+                jugadorRef.GetComponent<JugadorLogic>().pienzas = 0;
             }
         }
         else

@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TORNEO 3.unity
     guid: 71e8a70cec0bbbd46869126b2feb727b
+  - enabled: 1
+    path: Assets/Scenes/Drakan.unity
+    guid: 97ba1796b4ae4b54fa71b6ee32f40d91
   m_configObjects: {}

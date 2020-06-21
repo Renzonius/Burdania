@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class JugadorLogic : MonoBehaviour
 {
@@ -38,6 +39,12 @@ public class JugadorLogic : MonoBehaviour
 
     float tiempoEntreAtaques = 3;
 
+    public bool sePuedeMover = true;
+    public GameObject dialogo;
+    public bool puedeHablar;
+
+    public TextMeshProUGUI puntajeUI;
+
     void Start()
     {
         camaraRef = GameObject.FindGameObjectWithTag("MainCamera"); 
@@ -68,9 +75,14 @@ public class JugadorLogic : MonoBehaviour
         {
             anim.Play("Muerte");
         }
-            AtualizarBarraVida();
+        AtualizarBarraVida();
+        ActualizarPuntaje();
     }
 
+    void ActualizarPuntaje()
+    {
+        puntajeUI.text = "Puntaje: " + puntaje;
+    }
     private void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.tag == "Fuego" && PuedeRecibirDaño == true)
@@ -91,9 +103,22 @@ public class JugadorLogic : MonoBehaviour
         }
     }
 
-    void SumarPuntaje()
+    public void BoquearMovimiento()
     {
-        puntaje += 10;
+        sePuedeMover = false;
+    }
+
+    public void HabilitarMovimiento()
+    {
+        sePuedeMover = true;
+    }
+
+    void InteractuarHablar()
+    {
+        if (Input.GetKeyDown(KeyCode.E) && puedeHablar == true)
+        {
+            dialogo.GetComponent<ActivadorFondo>().ActivarDialogo();
+        }
     }
 
     void AtualizarBarraVida()
@@ -117,36 +142,40 @@ public class JugadorLogic : MonoBehaviour
 
     private void DespasamientoJugador()
     {
-        movHorizontal = Input.GetAxis("Horizontal");
-        movVertical = Input.GetAxis("Vertical");
-
-        jugadorInputs = new Vector3(movHorizontal, 0, movVertical); //ajustes en la velociadad del movimiento del juegador
-        jugadorInputs = Vector3.ClampMagnitude(jugadorInputs, 1);
-
-        DirecCamara();
-
-        movJugador = jugadorInputs.x * camDerecha + jugadorInputs.z * camAdelante;
-        movJugador = movJugador * velocidad;
-
-        jugador.transform.LookAt(jugador.transform.position + movJugador);
-
-        SetGravedad();
-        SetSalto();
-
-        jugador.Move(movJugador * Time.deltaTime);
-
-        if (movHorizontal != 0 || movVertical != 0)
+        if (sePuedeMover == true)
         {
-            anim.SetBool("Correr", true);
-            anim.SetBool("Correr", true);
-        }
-        else
-        {
-            anim.SetBool("Correr", false);
-        }
+            movHorizontal = Input.GetAxis("Horizontal");
+            movVertical = Input.GetAxis("Vertical");
 
-        if (jugador.isGrounded == true)
-            anim.SetBool("Saltar", false);
+            jugadorInputs = new Vector3(movHorizontal, 0, movVertical); //ajustes en la velociadad del movimiento del juegador
+            jugadorInputs = Vector3.ClampMagnitude(jugadorInputs, 1);
+
+            DirecCamara();
+
+            movJugador = jugadorInputs.x * camDerecha + jugadorInputs.z * camAdelante;
+            movJugador = movJugador * velocidad;
+
+            jugador.transform.LookAt(jugador.transform.position + movJugador);
+
+            SetGravedad();
+            SetSalto();
+            InteractuarHablar();
+
+            jugador.Move(movJugador * Time.deltaTime);
+
+            if (movHorizontal != 0 || movVertical != 0)
+            {
+                anim.SetBool("Correr", true);
+                anim.SetBool("Correr", true);
+            }
+            else
+            {
+                anim.SetBool("Correr", false);
+            }
+
+            if (jugador.isGrounded == true)
+                anim.SetBool("Saltar", false);
+        }
 
     }
 
