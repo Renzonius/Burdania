@@ -1336,7 +1336,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   piezaDeFlecha: {fileID: 3557168310928585874, guid: 350112704c8346c4ab6a9193f5e97ca5,
     type: 3}
-  "da\xF1o": 2.5
+  "da\xF1o": 10
   tienePieza: 0
 --- !u!136 &7381456197100748179
 CapsuleCollider:

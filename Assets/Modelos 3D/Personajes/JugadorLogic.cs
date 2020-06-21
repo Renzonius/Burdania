@@ -68,7 +68,7 @@ public class JugadorLogic : MonoBehaviour
         {
             anim.Play("Muerte");
         }
-
+            AtualizarBarraVida();
     }
 
     private void OnTriggerEnter(Collider col)
@@ -96,6 +96,10 @@ public class JugadorLogic : MonoBehaviour
         puntaje += 10;
     }
 
+    void AtualizarBarraVida()
+    {
+        Vida_barra.Heath = vida;
+    }
 
 
 

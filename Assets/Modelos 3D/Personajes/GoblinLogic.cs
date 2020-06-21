@@ -21,6 +21,7 @@ public class GoblinLogic : MonoBehaviour
     public bool tienePieza;
     private void Start()
     {
+        daño = 25f;
         rigidRef = gameObject.GetComponent<Rigidbody>();
         anim = gameObject.GetComponent<Animator>();
         jugador = GameObject.FindGameObjectWithTag("Jugador");
