@@ -101,7 +101,7 @@ AnimatorStateMachine:
     m_Position: {x: -180, y: 100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 6370810997962668049}
-    m_Position: {x: -420, y: 220, z: 0}
+    m_Position: {x: -140, y: 200, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2044881277016509872}
     m_Position: {x: 280, y: -20, z: 0}
@@ -358,7 +358,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Armature|6_Death
+  m_Name: Muerte
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []

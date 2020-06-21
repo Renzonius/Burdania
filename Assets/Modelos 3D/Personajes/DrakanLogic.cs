@@ -8,7 +8,10 @@ public class DrakanLogic : MonoBehaviour
     Animator anim;
     BoxCollider colliderRef;
     Transform dragonTrans;
+
     public GameObject jugadorObjetivo;
+    float jugadorVida;
+
     public Transform puntoSpawn;
     public GameObject llamas;
     public ParticleSystem particulasLlamas;
@@ -23,7 +26,7 @@ public class DrakanLogic : MonoBehaviour
     public bool segundaParte;
     public bool terceraParte;
     public bool cuartaParte;
-    public bool quitaParte;
+    public bool quintaParte;
 
     public bool volando;
     public bool HabilitarZona;
@@ -47,17 +50,26 @@ public class DrakanLogic : MonoBehaviour
     GameObject drakan;
     public bool ataqueVolando;
     public bool muroFuego;
+    public bool persecucionPrimeraParte;
+
+    //Combate Fianal
+    float aciertos;
+    GameObject spawnGoblins;
+    GameObject ballestaRef;
     void Start()
     {
+        ballestaRef = GameObject.FindGameObjectWithTag("Ballesta");
+        spawnGoblins = GameObject.FindGameObjectWithTag("Spawn");
         particulasLlamas.Pause();
         dragonTrans = gameObject.transform;
         jugadorObjetivo = GameObject.FindGameObjectWithTag("Jugador");
+        jugadorVida = jugadorObjetivo.GetComponent<JugadorLogic>().vida;
         drakan = GameObject.FindGameObjectWithTag("Drakan");
         daño = jugadorObjetivo.GetComponent<JugadorLogic>().vida * 25 / 100;
         vel_rotacion = 6f;
         //camara = GameObject.FindGameObjectWithTag("Enfocador").GetComponent<CambiarFocoCamara>();
         camara = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<MainCamaraScript>();
-        vida = 80f;
+        //vida = 100f;
         colliderRef = GetComponent<BoxCollider>();
         anim = GetComponent<Animator>();
         drakanAnim = GameObject.FindGameObjectWithTag("Drakan").GetComponent<Animator>();
@@ -65,28 +77,37 @@ public class DrakanLogic : MonoBehaviour
         calculo_vida = vida * 75 / 100;
     }
 
+    
     void FixedUpdate()
     {
         //if(primeraParte==true)
         //    Combatir();
 
         //testeando
-        Combates();
+        if(vida > 0)
+        {
+            Combates();
+        }
+        else
+        {
+            drakanAnim.Play("Muerte");
+        }
 
     }
 
 
+ 
     void Combates()
     {
         switch (parte)
         {
             case 1:
                 {
-                    if(enPosicion == false && drakanHuyo == false)
+                    if (enPosicion == false && drakanHuyo == false)
                     {
                         EntradaDeDrakan();
                     }
-                    else if(vida > 75) //Vida del dragon >75
+                    else if (vida > 75) //Vida del dragon >75
                     {
                         //camara.CambiarFocoPrimerCombate(drakanHuyo); //Enfocando a Drakan
                         //camara.EnfocarAlDragon(drakanHuyo);
@@ -109,10 +130,47 @@ public class DrakanLogic : MonoBehaviour
                 }
             case 3:
                 {
+                    JugadorEnLaPlaza();
                     break;
                 }
             case 4:
                 {
+                    PersecucionFinal();
+                    break;
+                }
+            case 5://Combate Final
+                {
+                    if (enPosicion == false)
+                    {
+                        DrakanDesciende();
+                    }
+                    else
+                    {
+                        anim.enabled = false;
+                        drakanAnim.SetBool("Volar", false);
+                        drakanAnim.SetBool("EnSuelo", true);
+                        MirarJugador();
+                        //se setea la cantidad de piezas que tiene cada oleada de goblins
+                        spawnGoblins.GetComponent<SpawnsLogic>().partesFlecha = 3;
+
+                    }
+                    break;
+                }
+            case 6:
+                {
+                    StartCoroutine(AtaqueDeGoblins());
+                    break;
+                }
+            case 7:
+                {
+                    anim.enabled = false;
+                    spawnGoblins.GetComponent<SpawnsLogic>().enabled=true;
+                    BallestaCargada();
+                    break;
+                }
+            case 8:
+                {
+                    drakanAnim.Play("Muerte");
                     break;
                 }
             default:
@@ -122,10 +180,68 @@ public class DrakanLogic : MonoBehaviour
         }
     }
 
+    void BallestaCargada()
+    {
+        if(ballestaRef.GetComponent<BallestaLogic>().CantidadProyectil >= 1)
+        {
+            enPosicion = false;
+            if(enPosicion == false)
+                parte = 5;
+        }
+    }
+
+    IEnumerator AtaqueDeGoblins()
+    {
+        yield return new WaitForSeconds(1f);
+        anim.enabled = true;
+        drakanAnim.SetBool("RecibeDaño", false);
+        drakanAnim.SetBool("EnSuelo", false);
+        anim.Play("DrakanSeAleja");
+    }
+   public void SiguienteParte()
+   {
+        OleadaSegunVida();
+        if(vida > 0)
+        {
+            parte = 7;
+            Debug.Log("NO Se murio");
+        }
+        else
+        {
+            parte = 8;
+        }
+   }
+
+    void OleadaSegunVida()
+    {
+        if (vida == 50)
+        {
+            spawnGoblins.GetComponent<SpawnsLogic>().cantidad_goblins = 10;
+        }
+        else if (vida == 25)
+        {
+            spawnGoblins.GetComponent<SpawnsLogic>().cantidad_goblins = 15;
+
+        }
+        else if(vida <=0)
+        {
+            parte = 8;
+        }
+    }
+    
+ 
+    
+
     void EntradaDeDrakan()
     {
         anim.Play("IntroDrakan");
         drakanAnim.SetBool("Volar", true);
+    }
+
+    void DrakanDesciende()
+    {
+        anim.enabled = true;
+        anim.Play("IrAlCombateFinal");
     }
 
     void RugidoDrakan()
@@ -150,14 +266,14 @@ public class DrakanLogic : MonoBehaviour
             tiempo_entre_llamas -= tiempo_entre_llamas * 0.5f * Time.deltaTime;
 
         }
-        tiempoAtacando +=  1 * Time.deltaTime;
+        tiempoAtacando += 1 * Time.deltaTime;
     }
 
     void Descanso()
     {
         drakanAnim.SetBool("AtaqueSuelo", false);
         particulasLlamas.Stop();
-        tiempoDescansando +=  1 * Time.deltaTime;
+        tiempoDescansando += 1 * Time.deltaTime;
     }
 
 
@@ -167,8 +283,7 @@ public class DrakanLogic : MonoBehaviour
         drakanAnim.SetBool("EnSuelo", false);
         drakanHuyo = true;
         enPosicion = false;
-        //camara.CambiarFocoPrimerCombate(drakanHuyo); //Enfocando al jugador
-        //camara.EnfocarAlDragon(drakanHuyo);
+
         colliderRef.enabled = false;
         anim.enabled = true;
         anim.Play("SegundaParteDrakan");
@@ -195,19 +310,48 @@ public class DrakanLogic : MonoBehaviour
 
     void Persecucion()
     {
+        if (segundaParte == true)
+        {
+            anim.Play("Persecucion_1");
+            if (ataqueVolando == true)
+            {
+                drakanAnim.SetBool("Volar", true);
+            }
+            else
+            {
+                drakanAnim.SetBool("Volar", false);
+            }
+        }
+        else
+        {
+            anim.enabled = false;
+        }
+    }
 
-        anim.Play("Persecucion_1");
+    void PersecucionFinal()
+    {
+        if(enPosicion == false)
+        {
+            anim.Play("Persecucion_2");
+            if (ataqueVolando == true)
+            {
+                drakanAnim.SetBool("Volar", true);
+            }
+            else
+            {
+                drakanAnim.SetBool("Volar", false);
+            }
+        }
+    }
+
+    void JugadorEnLaPlaza()
+    {
+        anim.SetBool("Patrullar", true);
         if (ataqueVolando == true)
         {
             drakanAnim.SetBool("Volar", true);
         }
-        else
-        {
-            //camara.PersecucionCambiarFoco(muroFuego);
-            drakanAnim.SetBool("Volar", false);
-        }
     }
-
 
 
 
@@ -223,33 +367,33 @@ public class DrakanLogic : MonoBehaviour
     {
         dragonTrans.rotation = Quaternion.Slerp(dragonTrans.rotation,
          Quaternion.LookRotation(jugadorObjetivo.transform.position - dragonTrans.position), vel_rotacion * Time.deltaTime);
-        
     }
 
-
-    void AtaqueFuego()
-    {
-        drakanAnim.SetBool("AtaqueSuelo",true);
-        particulasLlamas.Play();
-        if (tiempo_entre_llamas <= 1.5)
-        {
-            Instantiate(llamas, puntoSpawn.position, puntoSpawn.rotation);
-            tiempo_entre_llamas = 2;
-        }
-        else
-        {
-            tiempo_entre_llamas -= tiempo_entre_llamas * 0.5f * Time.deltaTime;
-
-        }
-        tiempoAtaque -= tiempoAtaque * 0.1f * Time.deltaTime;
-
-    }
 
     private void OnTriggerEnter(Collider col)
     {
-        if (col.gameObject.tag == "Lanza" && vida >0)
+        if(vida > 0)
         {
-            vida -= 2.5f;
+            switch (col.gameObject.tag)
+            {
+                case "Lanza":
+                    {
+                        if(parte == 1)
+                            vida -= 2.5f;
+                        break;
+                    }
+                case "Flecha":
+                    {
+                        drakanAnim.SetBool("RecibeDaño", true);
+                        vida -= 25f;
+                        parte = 6;
+                        break;
+                    }
+            }
+            //if (col.gameObject.tag == "Lanza" && vida >0)
+            //{
+            //    vida -= 2.5f;
+            //}
         }
     }
 }

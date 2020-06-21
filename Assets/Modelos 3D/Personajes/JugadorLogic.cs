@@ -13,6 +13,7 @@ public class JugadorLogic : MonoBehaviour
     private Vector3 movJugador;
 
     public Camera camara;
+    public GameObject camaraRef;
     private Vector3 camAdelante;
     private Vector3 camDerecha;
 
@@ -25,17 +26,25 @@ public class JugadorLogic : MonoBehaviour
     public float cant_municion;
     public float tiempo_daño = 1f;
     public bool PuedeRecibirDaño;
+    public int puntaje;
 
     public GameObject proyectil;
     public GameObject spawnLanzas;
 
+    public GameObject goblinRef;
+
+    GameObject ballesta;
+    public int pienzas;
+
     float tiempoEntreAtaques = 3;
+
     void Start()
     {
+        camaraRef = GameObject.FindGameObjectWithTag("MainCamera"); 
+        ballesta = GameObject.FindGameObjectWithTag("Ballesta");
         spawnLanzas = GameObject.FindGameObjectWithTag("SpawnLanza");
         gravedad = -9.8f;
         fuerzaSalto = 4;
-        vida = 100f;
         dañoFuegoDragon = GameObject.FindGameObjectWithTag("Dragon").GetComponent<DrakanLogic>();
         jugador = GetComponent<CharacterController>();
         camara = FindObjectOfType<Camera>();
@@ -44,16 +53,24 @@ public class JugadorLogic : MonoBehaviour
 
     void FixedUpdate()
     {
-        DespasamientoJugador();
-        RecibirDaño();
-        ArrojarLanza();
+        if (vida > 0)
+        {
+            DespasamientoJugador();
+            RecibirDaño();
+            ArrojarLanza();
+            if(ballesta.GetComponent<BallestaLogic>().jugadorCerca == true &&
+                ballesta.GetComponent<BallestaLogic>().CantidadProyectil >0)
+            {
+                DispararBallesta();
+            }
+        }
+        else
+        {
+            anim.Play("Muerte");
+        }
+
     }
 
-
-    private void OnCollisionEnter(Collision col)
-    {
-
-    }
     private void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.tag == "Fuego" && PuedeRecibirDaño == true)
@@ -62,7 +79,25 @@ public class JugadorLogic : MonoBehaviour
             tiempo_daño = 0f;
             PuedeRecibirDaño = false;
         }
+        else if (col.gameObject.tag == "Goblin" && PuedeRecibirDaño == true)
+        {
+            vida -= goblinRef.GetComponent<GoblinLogic>().daño;
+            tiempo_daño = 0f;
+            PuedeRecibirDaño = false;
+        }
+        else if(col.gameObject.tag == "MuroDeFuego")
+        {
+            vida = 0;
+        }
     }
+
+    void SumarPuntaje()
+    {
+        puntaje += 10;
+    }
+
+
+
 
     void RecibirDaño()
     {
@@ -111,6 +146,14 @@ public class JugadorLogic : MonoBehaviour
 
     }
 
+    void DispararBallesta()
+    {
+        if (Input.GetKeyUp(KeyCode.F))
+        {
+            ballesta.GetComponent<BallestaLogic>().DispararProyectil();
+        }
+    }
+
     void DirecCamara()
     {
         camAdelante = camara.transform.forward;
@@ -151,7 +194,7 @@ public class JugadorLogic : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0) && cant_municion >0)
             {
-                Instantiate(proyectil, gameObject.transform.position, gameObject.transform.rotation);
+                Instantiate(proyectil, spawnLanzas.transform.position, spawnLanzas.transform.rotation);
                 anim.SetBool("AtaqueToma", true);
                 cant_municion -= 1; 
                 tiempoEntreAtaques = 0f;
@@ -162,5 +205,11 @@ public class JugadorLogic : MonoBehaviour
             anim.SetBool("AtaqueToma", false);
             tiempoEntreAtaques += 2.9f * Time.deltaTime; 
         }
+    }
+
+    public void PoseDeVictoria()
+    {
+        transform.LookAt(camaraRef.transform.position);
+        anim.Play("PoseVictoria");
     }
 }

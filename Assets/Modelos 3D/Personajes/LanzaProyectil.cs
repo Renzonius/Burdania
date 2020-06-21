@@ -6,8 +6,7 @@ public class LanzaProyectil : MonoBehaviour
 {
     Rigidbody rigidRef;
 
-    public float angulo_vuelo;
-    public float velocidadAngular;
+    public float velocidad;
 
     public float daño = 2.5f;
 
@@ -23,15 +22,34 @@ public class LanzaProyectil : MonoBehaviour
 
     void TrayectoDeLanza()
     {
-        rigidRef.AddRelativeForce(Vector3.forward * 15f * Time.deltaTime, ForceMode.Impulse);
+        rigidRef.AddRelativeForce(Vector3.forward * velocidad * Time.deltaTime, ForceMode.Impulse);
     }
 
     private void OnTriggerEnter(Collider col)
     {
-        if (col.gameObject.tag == "Dragon")
+        switch (col.gameObject.tag)
         {
-            Destroy(gameObject);
+            case "Dragon":
+                {
+                    Destroy(gameObject);
+                    break;
+                }
+            case "Muro":
+                {
+                    rigidRef.velocity = Vector3.zero;
+                    Destroy(gameObject, 5f);
+                    break;
+                }
+            case "Goblin":
+                {
+                    Destroy(gameObject);
+                    break;
+                }
         }
+        //if (col.gameObject.tag == "Dragon")
+        //{
+        //    Destroy(gameObject);
+        //}
 
     }
 }

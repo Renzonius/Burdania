@@ -23,6 +23,14 @@ TagManager:
   - MuroDeFuego
   - FocoPersecucion
   - CamaraPrincipal
+  - Arena
+  - PasilloA
+  - Spawn
+  - SpawnBallesta
+  - Ballesta
+  - Goblin
+  - Flecha
+  - Pieza
   layers:
   - Default
   - TransparentFX
