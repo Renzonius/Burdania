@@ -48,6 +48,8 @@ public class JugadorLogic : MonoBehaviour
 
     public TextMeshProUGUI puntajeUI;
 
+    public GameObject derrotaRef;
+    public GameObject victoriaRef;
     public GameObject tituloDerrota;
     public GameObject tituloVictoria;
     public GameObject fondoCanvasNegro;
@@ -92,6 +94,7 @@ public class JugadorLogic : MonoBehaviour
 
     void CanvasPerdio()
     {
+        derrotaRef.SetActive(true);
         if(alfa.a <= 0.5f)
             alfa.a += 0.1f * Time.deltaTime;
         fondoCanvasNegro.GetComponent<Image>().color = alfa;
@@ -108,8 +111,7 @@ public class JugadorLogic : MonoBehaviour
     {
         SceneManager.LoadScene("MENU PRINCIPAL");
     }
-
-
+    
     void ActualizarPuntaje()
     {
         puntajeUI.text = puntaje.ToString();
@@ -131,6 +133,14 @@ public class JugadorLogic : MonoBehaviour
         else if(col.gameObject.tag == "MuroDeFuego")
         {
             vida = 0;
+        }
+    }
+
+    private void OnParticleCollision(GameObject col)
+    {
+        if(col.gameObject.tag == "Fuego")
+        {
+            vida -= 0.5f;
         }
     }
 
@@ -273,6 +283,7 @@ public class JugadorLogic : MonoBehaviour
 
     public void PoseDeVictoria()
     {
+        victoriaRef.SetActive(true);
         transform.LookAt(camaraRef.transform.position);
         anim.Play("PoseVictoria");
         tituloVictoria.GetComponent<Image>().color += new Color(240f, 150f, 0f, (0.3f * Time.deltaTime));

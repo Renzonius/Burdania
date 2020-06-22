@@ -38,10 +38,12 @@ public class DrakanLogic : MonoBehaviour
     public float tiempoReposo = 15f;
     public float tiempoAtaque = 10f;
 
+    public AudioSource efectoDeSonidoRugido;
+    public AudioSource efectoDeSonidoAtaque;
+    bool rugio;
 
+    public AudioClip ataqueDrakanSonido;
 
-
-    //Testeando
     public float parte;
     public float tiempoDescansando = 0; //comienza descanso 0<=10
     public float tiempoAtacando = 0;
@@ -107,6 +109,12 @@ public class DrakanLogic : MonoBehaviour
                     if (enPosicion == false && drakanHuyo == false)
                     {
                         EntradaDeDrakan();
+                        if(rugio == false)
+                        {
+                            rugio = true;
+                            efectoDeSonidoRugido.Play();
+                        }
+
                     }
                     else if (vida > 75) //Vida del dragon >75
                     {
@@ -205,7 +213,6 @@ public class DrakanLogic : MonoBehaviour
         if(vida > 0)
         {
             parte = 7;
-            Debug.Log("NO Se murio");
         }
         else
         {
@@ -215,11 +222,11 @@ public class DrakanLogic : MonoBehaviour
 
     void OleadaSegunVida()
     {
-        if (vida == 50)
+        if (vida <= 50 && vida >25)
         {
             spawnGoblins.GetComponent<SpawnsLogic>().cantidad_goblins = 10;
         }
-        else if (vida == 25)
+        else if (vida <= 25 && vida >0)
         {
             spawnGoblins.GetComponent<SpawnsLogic>().cantidad_goblins = 15;
 
@@ -255,17 +262,20 @@ public class DrakanLogic : MonoBehaviour
 
     void LanzarLLamas()
     {
+
+        
         drakanAnim.SetBool("AtaqueSuelo", true);
         particulasLlamas.Play();
+
         if (tiempo_entre_llamas <= 1.5)
         {
-            Instantiate(llamas, puntoSpawn.position, puntoSpawn.rotation);
+            //Instantiate(llamas, puntoSpawn.position, puntoSpawn.rotation);
             tiempo_entre_llamas = 2;
+            
         }
         else
         {
             tiempo_entre_llamas -= tiempo_entre_llamas * 0.5f * Time.deltaTime;
-
         }
         tiempoAtacando += 1 * Time.deltaTime;
     }
@@ -285,7 +295,7 @@ public class DrakanLogic : MonoBehaviour
         drakanHuyo = true;
         enPosicion = false;
 
-        colliderRef.enabled = false;
+        //colliderRef.enabled = false;
         anim.enabled = true;
         anim.Play("SegundaParteDrakan");
     }
@@ -296,10 +306,16 @@ public class DrakanLogic : MonoBehaviour
         if (tiempoDescansando <= 5)
         {
             Descanso();
+            efectoDeSonidoAtaque.Play(); //si claro--
         }
         else if (tiempoAtacando <= 6 && tiempoDescansando >= 5)
         {
-            LanzarLLamas();
+            if(efectoDeSonidoAtaque.isPlaying == true)
+            {
+                LanzarLLamas();
+                Debug.Log("sonidoFuego");
+            }
+
         }
         else
         {
@@ -388,6 +404,7 @@ public class DrakanLogic : MonoBehaviour
                         drakanAnim.SetBool("RecibeDaño", true);
                         vida -= 25f;
                         parte = 6;
+                        Debug.Log("Fuedañado");
                         break;
                     }
             }

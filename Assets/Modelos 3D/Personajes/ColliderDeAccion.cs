@@ -12,9 +12,14 @@ public class ColliderDeAccion : MonoBehaviour
     public GameObject barreraCombateFianl;
     GameObject arena;
     GameObject pasilloA;
+    AudioSource efectoDeSonido;
+    public GameObject silenciarMusicaInicio;
+    GameObject jugadorRef;
 
     void Start()
     {
+        jugadorRef = GameObject.FindGameObjectWithTag("Jugador");
+        efectoDeSonido = GetComponent<AudioSource>();
         arena = GameObject.FindGameObjectWithTag("Arena");
         pasilloA = GameObject.FindGameObjectWithTag("PasilloA");
         colliderRef = GetComponent<BoxCollider>();
@@ -31,8 +36,15 @@ public class ColliderDeAccion : MonoBehaviour
         if(jugador.gameObject.tag == "Jugador")
         {
             drakan.parte = nro_parte; //modifica el Swich
-            if(nro_parte == 2)
-                drakan.segundaParte = true;
+            if (nro_parte == 1)
+            {
+                efectoDeSonido.Play();
+            } 
+            else if(nro_parte == 2)
+            {
+                drakan.segundaParte = true; //Persecucion 1
+                efectoDeSonido.Play();
+            }
             else if(nro_parte == 3)
             {
                 drakan.segundaParte = false;
@@ -41,14 +53,17 @@ public class ColliderDeAccion : MonoBehaviour
             else if(nro_parte == 4)
             {
                 drakan.cuartaParte = true;
-                arena.SetActive(false);
-                pasilloA.SetActive(false);
+                //arena.SetActive(false);
+                //pasilloA.SetActive(false);
             }
             else if(nro_parte == 5)
             {
+                jugadorRef.GetComponent<JugadorLogic>().cant_municion = 50;
                 barreraCombateFianl.SetActive(true);
                 drakan.cuartaParte = false;
                 drakan.quintaParte = true;
+                //silenciarMusicaInicio.GetComponent<AudioSource>().Stop();
+                //efectoDeSonido.Play();
             }
 
         }

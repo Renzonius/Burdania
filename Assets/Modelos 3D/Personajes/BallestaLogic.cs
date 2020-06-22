@@ -17,8 +17,11 @@ public class BallestaLogic : MonoBehaviour
     float vel_rotacion = 3F;
     public bool jugadorCerca;
 
+    AudioSource efectoDeSonido;
+
     private void Start()
     {
+        efectoDeSonido = GetComponent<AudioSource>();
         cantidadDePiezasJugador = GameObject.FindGameObjectWithTag("Jugador").GetComponent<JugadorLogic>().pienzas;
         jugadorRef = GameObject.FindGameObjectWithTag("Jugador");
         anim = GetComponent<Animator>();
@@ -37,6 +40,7 @@ public class BallestaLogic : MonoBehaviour
     public void DispararProyectil()
     {
         anim.Play("Disparo");
+        efectoDeSonido.Play();
         if (CantidadProyectil > 0)
         {
             CantidadProyectil -= 1;
