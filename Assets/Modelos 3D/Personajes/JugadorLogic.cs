@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class JugadorLogic : MonoBehaviour
 {
@@ -33,6 +35,7 @@ public class JugadorLogic : MonoBehaviour
     public GameObject spawnLanzas;
 
     public GameObject goblinRef;
+    GameObject dragonRef;
 
     GameObject ballesta;
     public int pienzas;
@@ -45,11 +48,18 @@ public class JugadorLogic : MonoBehaviour
 
     public TextMeshProUGUI puntajeUI;
 
+    public GameObject tituloDerrota;
+    public GameObject tituloVictoria;
+    public GameObject fondoCanvasNegro;
+    Color alfa;
+    public GameObject botonVolver;
+
     void Start()
     {
-        camaraRef = GameObject.FindGameObjectWithTag("MainCamera"); 
+        camaraRef = GameObject.FindGameObjectWithTag("MainCamera");
         ballesta = GameObject.FindGameObjectWithTag("Ballesta");
         spawnLanzas = GameObject.FindGameObjectWithTag("SpawnLanza");
+        dragonRef = GameObject.FindGameObjectWithTag("Dragon");
         gravedad = -9.8f;
         fuerzaSalto = 4;
         dañoFuegoDragon = GameObject.FindGameObjectWithTag("Dragon").GetComponent<DrakanLogic>();
@@ -60,7 +70,7 @@ public class JugadorLogic : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (vida > 0)
+        if (vida > 0 && dañoFuegoDragon.vida> 0)
         {
             DespasamientoJugador();
             RecibirDaño();
@@ -71,17 +81,38 @@ public class JugadorLogic : MonoBehaviour
                 DispararBallesta();
             }
         }
-        else
+        else if(vida <=0)
         {
             anim.Play("Muerte");
+            CanvasPerdio();
         }
         AtualizarBarraVida();
         ActualizarPuntaje();
     }
 
+    void CanvasPerdio()
+    {
+        if(alfa.a <= 0.5f)
+            alfa.a += 0.1f * Time.deltaTime;
+        fondoCanvasNegro.GetComponent<Image>().color = alfa;
+        tituloDerrota.GetComponent<Image>().color += new Color(146f, 37f, 37f, (0.3f * Time.deltaTime));
+        Invoke("AlfaBoton", 4.5f);
+    }
+
+
+    void AlfaBoton()
+    {
+        botonVolver.SetActive(true);
+    }
+    public void BotonVolverAlMenu()
+    {
+        SceneManager.LoadScene("MENU PRINCIPAL");
+    }
+
+
     void ActualizarPuntaje()
     {
-        puntajeUI.text = "Puntaje: " + puntaje;
+        puntajeUI.text = puntaje.ToString();
     }
     private void OnTriggerEnter(Collider col)
     {
@@ -244,5 +275,7 @@ public class JugadorLogic : MonoBehaviour
     {
         transform.LookAt(camaraRef.transform.position);
         anim.Play("PoseVictoria");
+        tituloVictoria.GetComponent<Image>().color += new Color(240f, 150f, 0f, (0.3f * Time.deltaTime));
+        Invoke("AlfaBoton", 4.5f);
     }
 }

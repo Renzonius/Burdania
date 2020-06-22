@@ -31,6 +31,7 @@ TagManager:
   - Goblin
   - Flecha
   - Pieza
+  - CanvasFinal
   layers:
   - Default
   - TransparentFX

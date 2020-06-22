@@ -92,6 +92,7 @@ public class DrakanLogic : MonoBehaviour
         {
             drakanAnim.Play("Muerte");
         }
+        AtualizarBarraVida();
 
     }
 
@@ -390,10 +391,10 @@ public class DrakanLogic : MonoBehaviour
                         break;
                     }
             }
-            //if (col.gameObject.tag == "Lanza" && vida >0)
-            //{
-            //    vida -= 2.5f;
-            //}
         }
+    }
+    void AtualizarBarraVida()
+    {
+        Vida_Drakan.Heath = vida;
     }
 }
